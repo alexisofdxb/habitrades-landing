@@ -8,6 +8,7 @@ type ProductShowcaseFrameProps = {
   backgroundSrc?: string;
   foreground?: ReactNode;
   variant?: "image" | "code";
+  fillHeight?: boolean;
 };
 
 export function ProductShowcaseFrame({
@@ -15,11 +16,22 @@ export function ProductShowcaseFrame({
   backgroundSrc = defaultBackground,
   foreground,
   variant = "image",
+  fillHeight = false,
 }: ProductShowcaseFrameProps) {
   if (variant === "code") {
     return (
-      <div className="relative overflow-hidden rounded-xl bg-black shadow-[0_60px_160px_rgba(0,0,0,0.75)] sm:rounded-2xl">
-        <div className="relative aspect-[2/1] min-h-0 overflow-y-auto min-[640px]:min-h-[320px] min-[810px]:min-h-[360px]">
+      <div
+        className={`relative overflow-hidden rounded-xl bg-black shadow-[0_60px_160px_rgba(0,0,0,0.75)] sm:rounded-2xl ${
+          fillHeight ? "flex h-full min-h-[380px] flex-col min-[900px]:min-h-0" : ""
+        }`}
+      >
+        <div
+          className={`relative overflow-y-auto ${
+            fillHeight
+              ? "min-h-0 flex-1"
+              : "aspect-[2/1] min-h-[320px] min-[810px]:min-h-[360px]"
+          }`}
+        >
           {foreground}
         </div>
       </div>

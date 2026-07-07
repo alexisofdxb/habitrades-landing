@@ -314,63 +314,60 @@ export const institutionsSection = {
   },
 } as const;
 
-export const contextApiResponseCode = `{
+export const contextApiCode = `{
   "market": "BTC-PERP",
+
   "marketRegime": "Bullish",
+
   "confidence": 81,
 
-  "summary": "BTC remains in an established uptrend with continued spot demand, although momentum is beginning to slow near resistance.",
+  "summary": "BTC remains in an established uptrend with healthy spot demand.",
 
   "whatChanged": [
-    "Open interest increased by 6.8%",
-    "Spot buying accelerated",
-    "Funding returned to neutral"
+    "Open interest +6.8%",
+    "Funding normalized",
+    "Spot inflows increased"
   ],
 
   "supportingEvidence": [
-    "Higher highs remain intact",
-    "Strong spot inflows",
-    "Positive market breadth"
+    "Higher highs",
+    "Strong spot demand",
+    "Positive breadth"
   ],
 
   "contradictingEvidence": [
     "Momentum slowing",
-    "Price approaching major resistance"
-  ],
+    "Resistance overhead"
+  ]
 
-  "nextMonitoringEvent": "Watch for a breakout above $66,500 or rejection from resistance.",
-
-  "validUntil": "2026-07-08T16:00:00Z"
 }`;
 
-export const decisionApiResponseCode = `{
+export const decisionApiCode = `{
   "action": "WAIT",
 
   "confidence": 74,
 
-  "thesis": "Wait for price to retrace into support before considering a long position.",
+  "thesis": "Wait for a pullback into support before entering.",
 
   "bullCase": [
-    "Primary trend remains bullish",
-    "Spot demand continues to strengthen",
-    "Healthy pullback could improve entry"
+    "Trend remains intact",
+    "Spot demand increasing"
   ],
 
   "bearCase": [
     "Momentum weakening",
-    "Macro event tomorrow",
-    "Resistance remains overhead"
+    "Resistance overhead"
   ],
 
-  "entry": {
-    "type": "Limit",
-    "price": 63000
-  },
+  "entry": 63000,
 
-  "stop": {
-    "price": 61500,
-    "reason": "Structure invalidation"
-  }
+  "stop": 61500,
+
+  "positionSize": "2%",
+
+  "portfolioImpact": "Moderate",
+
+  "nextReview": "4H candle close"
 }`;
 
 export const journalApiResponseCode = `{
@@ -383,42 +380,50 @@ export const journalApiResponseCode = `{
   "outcome": "Support failed following unexpected macro news.",
 
   "whatWorked": [
-    "Risk management respected",
+    "Risk respected",
     "Position sizing followed policy"
   ],
 
   "whatFailed": [
-    "Ignored weakening momentum",
-    "Entered before confirmation"
+    "Entered before confirmation",
+    "Ignored weakening momentum"
   ],
 
-  "lesson": "Require stronger confirmation before entering during high-impact news weeks.",
+  "lesson": "Wait for confirmation during macro weeks.",
 
   "memoryUpdated": true,
 
-  "memoryStrength": "+7 Experience"
+  "experience": "+7",
+
+  "replayAvailable": true
 }`;
 
 export const agentsApiResponseCode = `{
-  "agentId": "tradexbt.habi.any",
+  "agent": "atlas.habi.any",
 
   "status": "Active",
 
-  "experience": {
-    "trades": 247,
-    "winRate": "63%",
-    "journals": 247,
-    "lessonsLearned": 91
-  },
-
-  "memory": {
-    "status": "Growing",
-    "confidence": 84
-  },
-
   "brain": "HabiSmart",
 
-  "createdAt": "2026-07-07T10:30:00Z"
+  "strategy": "Swing Trading",
+
+  "experience": 247,
+
+  "winRate": "63%",
+
+  "confidence": 84,
+
+  "journals": 247,
+
+  "memories": 618,
+
+  "favoriteMarkets": [
+    "BTC",
+    "ETH",
+    "SOL"
+  ],
+
+  "lastUpdated": "2 mins ago"
 }`;
 
 export const riskApiResponseCode = `{
@@ -427,6 +432,7 @@ export const riskApiResponseCode = `{
   "overallRisk": "Medium",
 
   "riskScore": 32,
+
 
   "checks": {
     "positionSize": "Pass",
@@ -443,7 +449,9 @@ export const riskApiResponseCode = `{
 
   "approvalRequired": false,
 
+
   "recommendation": "Position fits within current portfolio and risk policy."
+
 }`;
 
 const decisionAndJournalDescription =
@@ -457,7 +465,7 @@ export const institutionFeatures = [
       "Convert raw market data into structured context by identifying what changed, why it matters, supporting evidence, contradictions, confidence, and market regime.",
     showcase: {
       type: "api" as const,
-      code: contextApiResponseCode,
+      code: contextApiCode,
     },
     alt: "Habitrades Context API response",
   },
@@ -489,7 +497,7 @@ export const institutionFeatures = [
     description: decisionAndJournalDescription,
     showcase: {
       type: "api" as const,
-      code: decisionApiResponseCode,
+      code: decisionApiCode,
     },
     alt: "Habitrades Decision API response",
   },
@@ -599,7 +607,8 @@ export const howItWorksSteps = [
   },
   {
     title: "Connect markets",
-    description: "Link Hyperliquid, Polymarket, and other venues.",
+    description:
+      "Trade perps, tokenised stocks, IPOs, forex, and commodities.",
     icon: "markets",
   },
   {

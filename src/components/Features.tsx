@@ -1,36 +1,114 @@
 "use client";
 
-import { useState, type UIEvent } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { ProductShowcaseFrame } from "@/src/components/ProductShowcaseFrame";
+import { useState } from "react";
 import {
-  InstitutionShowcase,
-  isApiShowcase,
-} from "@/src/components/InstitutionShowcase";
+  AnimatePresence,
+  LayoutGroup,
+  motion,
+  useReducedMotion,
+} from "framer-motion";
+import { ProductShowcaseFrame } from "@/src/components/ProductShowcaseFrame";
+import { InstitutionShowcase } from "@/src/components/InstitutionShowcase";
 import {
   institutionFeatures,
   institutionsSection,
 } from "@/src/data/site-content";
 
+function AccordionRow({
+  feature,
+  isActive,
+  onSelect,
+  shouldReduceMotion,
+  accordionTransition,
+}: {
+  feature: (typeof institutionFeatures)[number];
+  isActive: boolean;
+  onSelect: () => void;
+  shouldReduceMotion: boolean | null;
+  accordionTransition: {
+    height: { duration: number; ease: readonly [number, number, number, number] };
+    opacity: { duration: number; ease: "easeOut" };
+    layout: { duration: number; ease: readonly [number, number, number, number] };
+  };
+}) {
+  return (
+    <motion.div
+      layout={!shouldReduceMotion}
+      transition={accordionTransition}
+      className="shrink-0 border-b border-white/[0.08]"
+    >
+      <button
+        type="button"
+        onClick={onSelect}
+        aria-expanded={isActive}
+        className="flex w-full cursor-pointer flex-col text-left"
+      >
+        <span
+          className={`flex h-12 items-center text-[15px] font-medium tracking-[-0.02em] transition-colors duration-300 sm:h-[52px] sm:text-[16px] ${
+            isActive ? "text-white" : "text-white/40"
+          }`}
+        >
+          {feature.headline}
+        </span>
+
+        <AnimatePresence initial={false}>
+          {isActive && (
+            <motion.div
+              key="description"
+              initial={
+                shouldReduceMotion
+                  ? { height: "auto", opacity: 1 }
+                  : { height: 0, opacity: 0 }
+              }
+              animate={{ height: "auto", opacity: 1 }}
+              exit={
+                shouldReduceMotion
+                  ? { height: "auto", opacity: 1 }
+                  : { height: 0, opacity: 0 }
+              }
+              transition={accordionTransition}
+              className="overflow-hidden"
+            >
+              <p className="max-w-[420px] pt-1 pb-5 text-[13px] leading-[1.55] text-[#858585] sm:pt-1.5 sm:pb-6 sm:text-[14px]">
+                {feature.description}
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </button>
+    </motion.div>
+  );
+}
+
 export default function Features() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [mobileIndex, setMobileIndex] = useState(0);
+  const shouldReduceMotion = useReducedMotion();
   const activeFeature = institutionFeatures[activeIndex];
+  const itemsBeforeActive = institutionFeatures.slice(0, activeIndex);
+  const itemsAfterActive = institutionFeatures.slice(activeIndex + 1);
 
-  function handleMobileSliderScroll(event: UIEvent<HTMLDivElement>) {
-    const slider = event.currentTarget;
-    const firstSlide = slider.querySelector<HTMLElement>("[data-feature-slide]");
-
-    if (!firstSlide) {
-      return;
-    }
-
-    const slideWidth = firstSlide.offsetWidth + 16;
-    const nextIndex = Math.round(slider.scrollLeft / slideWidth);
-    setMobileIndex(
-      Math.min(institutionFeatures.length - 1, Math.max(0, nextIndex)),
-    );
-  }
+  const revealInitial = shouldReduceMotion
+    ? { opacity: 1, y: 0 }
+    : { opacity: 0, y: 24 };
+  const revealAnimate = { opacity: 1, y: 0 };
+  const revealTransition = {
+    duration: shouldReduceMotion ? 0 : 0.65,
+    ease: [0.22, 1, 0.36, 1] as const,
+  };
+  const accordionTransition = {
+    height: {
+      duration: shouldReduceMotion ? 0 : 0.38,
+      ease: [0.22, 1, 0.36, 1] as const,
+    },
+    opacity: {
+      duration: shouldReduceMotion ? 0 : 0.22,
+      ease: "easeOut" as const,
+    },
+    layout: {
+      duration: shouldReduceMotion ? 0 : 0.38,
+      ease: [0.22, 1, 0.36, 1] as const,
+    },
+  };
 
   return (
     <section
@@ -39,10 +117,10 @@ export default function Features() {
     >
       <div className="mx-auto w-full max-w-[1080px]">
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={revealInitial}
+          whileInView={revealAnimate}
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.65 }}
+          transition={revealTransition}
           className="grid gap-8 min-[810px]:grid-cols-[minmax(0,0.46fr)_minmax(0,0.54fr)] min-[810px]:items-end min-[810px]:gap-12 min-[1200px]:gap-16"
         >
           <div>
@@ -62,154 +140,88 @@ export default function Features() {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={revealInitial}
+          whileInView={revealAnimate}
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.65, delay: 0.08 }}
-          role="tablist"
-          aria-label="Institution capabilities"
-          className="mt-10 hidden w-full max-w-full gap-1 overflow-x-auto rounded-xl bg-[#171615] p-1.5 [scrollbar-width:none] min-[640px]:mt-14 min-[640px]:flex min-[640px]:w-fit [&::-webkit-scrollbar]:hidden"
+          transition={{ ...revealTransition, delay: 0.08 }}
+          className="mt-12 grid gap-8 min-[900px]:mt-16 min-[900px]:grid-cols-2 min-[900px]:items-stretch min-[900px]:gap-8 min-[1200px]:gap-10"
         >
-          {institutionFeatures.map((feature, index) => (
-            <button
-              key={feature.tabLabel}
-              type="button"
-              role="tab"
-              aria-selected={activeIndex === index}
-              onClick={() => setActiveIndex(index)}
-              className={`relative shrink-0 rounded-lg px-2 py-2 text-left text-sm font-medium transition-colors min-[640px]:px-3 min-[640px]:text-center min-[810px]:px-4 min-[810px]:text-sm ${
-                activeIndex === index
-                  ? "text-white"
-                  : "text-white hover:text-white"
-              }`}
-            >
-              {activeIndex === index && (
-                <motion.span
-                  layoutId="active-feature-tab"
-                  className="absolute inset-0 rounded-lg bg-[#0a0a0a]"
-                  transition={{ type: "spring", stiffness: 420, damping: 34 }}
-                />
-              )}
-              <span className="relative z-10">{feature.tabLabel}</span>
-            </button>
-          ))}
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.7, delay: 0.12 }}
-          className="mt-8 min-[640px]:hidden"
-        >
-          <div
-            onScroll={handleMobileSliderScroll}
-            className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-          >
-            {institutionFeatures.map((feature) => (
-              <article
-                key={feature.tabLabel}
-                data-feature-slide
-                className="w-full shrink-0 snap-start"
-              >
-                <ProductShowcaseFrame
-                  backgroundSrc="/images/feature-wide.png"
-                  foregroundAlt={feature.alt}
-                  variant={isApiShowcase(feature) ? "code" : "image"}
-                  foreground={<InstitutionShowcase feature={feature} />}
-                />
-
-                <div className="mt-5">
-                  <p className="text-[12px] leading-[1.3] text-[#858585]">
-                    {feature.headline}
-                  </p>
-                  <p className="mt-4 max-w-[330px] text-[18px] font-normal leading-[1.08] tracking-[-0.035em] text-[#f4f4f2]">
-                    {feature.description}
-                  </p>
-                  <a
-                    href={institutionsSection.primaryCta.href}
-                    className="mt-5 inline-flex h-9 items-center rounded-md bg-white px-3 text-[12px] font-medium text-[#111] transition-transform hover:scale-[1.025]"
-                  >
-                    {institutionsSection.primaryCta.label}
-                  </a>
-                </div>
-              </article>
-            ))}
-          </div>
-
-          <div className="mt-3 flex justify-center">
-            <div className="flex h-6 items-center gap-1.5 rounded-full bg-white/20 px-2">
-              {institutionFeatures.map((feature, index) => (
-                <span
+          <LayoutGroup>
+            <div className="order-2 flex h-full min-h-0 min-w-0 flex-col border-t border-white/[0.08] min-[900px]:order-1">
+              {itemsBeforeActive.map((feature, index) => (
+                <AccordionRow
                   key={feature.tabLabel}
-                  className={`block size-2 rounded-full transition-colors ${
-                    index === mobileIndex ? "bg-white" : "bg-white/45"
-                  }`}
+                  feature={feature}
+                  isActive={false}
+                  onSelect={() => setActiveIndex(index)}
+                  shouldReduceMotion={shouldReduceMotion}
+                  accordionTransition={accordionTransition}
                 />
               ))}
-            </div>
-          </div>
-        </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.7, delay: 0.16 }}
-          className="relative mt-4 hidden min-[640px]:block sm:mt-6"
-        >
-          <ProductShowcaseFrame
-            backgroundSrc="/images/feature-wide.png"
-            foregroundAlt={activeFeature.alt}
-            variant={isApiShowcase(activeFeature) ? "code" : "image"}
-            foreground={
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeFeature.tabLabel}
-                  initial={{ opacity: 0, y: 24, scale: 0.985 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -12, scale: 0.99 }}
-                  transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                  className="relative h-full w-full"
-                >
-                  <InstitutionShowcase feature={activeFeature} />
-                </motion.div>
-              </AnimatePresence>
-            }
-          />
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 32 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.65 }}
-          className="mt-6 hidden items-start gap-8 min-[640px]:grid min-[810px]:grid-cols-[minmax(0,1fr)_auto] min-[810px]:items-end min-[810px]:gap-14"
-        >
-          <div className="min-w-0">
-            <AnimatePresence mode="wait">
-              <motion.div
+              <AccordionRow
                 key={activeFeature.tabLabel}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <p className="text-base leading-[1.3] text-[#858585]">
-                  {activeFeature.headline}
-                </p>
-                <p className="mt-6 max-w-[910px] text-[20px] font-normal leading-[1.22] tracking-[-0.03em] text-[#f4f4f2] sm:text-[20px] min-[1200px]:text-[30px]">
-                  {activeFeature.description}
-                </p>
-              </motion.div>
-            </AnimatePresence>
+                feature={activeFeature}
+                isActive
+                onSelect={() => setActiveIndex(activeIndex)}
+                shouldReduceMotion={shouldReduceMotion}
+                accordionTransition={accordionTransition}
+              />
+
+              {itemsAfterActive.length > 0 && (
+                <>
+                  <div
+                    aria-hidden="true"
+                    className="hidden min-h-0 min-[900px]:block min-[900px]:flex-1"
+                  />
+                  <div className="shrink-0">
+                    {itemsAfterActive.map((feature, index) => (
+                      <AccordionRow
+                        key={feature.tabLabel}
+                        feature={feature}
+                        isActive={false}
+                        onSelect={() => setActiveIndex(activeIndex + 1 + index)}
+                        shouldReduceMotion={shouldReduceMotion}
+                        accordionTransition={accordionTransition}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {itemsAfterActive.length === 0 && (
+                <div
+                  aria-hidden="true"
+                  className="hidden min-h-0 min-[900px]:block min-[900px]:flex-1"
+                />
+              )}
+            </div>
+          </LayoutGroup>
+
+          <div className="order-1 flex h-full min-h-[380px] min-w-0 flex-col min-[900px]:order-2">
+            <ProductShowcaseFrame
+              foregroundAlt={activeFeature.alt}
+              variant="code"
+              fillHeight
+              foreground={
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeFeature.tabLabel}
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{
+                      duration: shouldReduceMotion ? 0 : 0.3,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                    className="h-full w-full"
+                  >
+                    <InstitutionShowcase feature={activeFeature} />
+                  </motion.div>
+                </AnimatePresence>
+              }
+            />
           </div>
-          <a
-            href={institutionsSection.primaryCta.href}
-            className="inline-flex w-fit shrink-0 rounded-[10px] bg-white p-[7px] text-base font-medium text-[#111] transition-transform hover:scale-[1.025]"
-          >
-            {institutionsSection.primaryCta.label}
-          </a>
         </motion.div>
       </div>
     </section>
