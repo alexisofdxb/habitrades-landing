@@ -60,7 +60,7 @@ export default function Navbar() {
         </div>
 
         <a
-          href="https://app.tryhabi.xyz"
+          href="https://app.habitrades.com"
           className="hidden rounded-lg bg-white px-2 py-2 leading-none text-base font-medium text-black transition-transform hover:scale-[1.03] lg:block"
         >
           Get Started
@@ -164,7 +164,7 @@ export default function Navbar() {
 
               <motion.a
                 variants={menuItemVariants}
-                href="https://app.tryhabi.xyz"
+                href="https://app.habitrades.com"
                 onClick={() => setOpen(false)}
                 className="
                   mt-8
