@@ -7,12 +7,7 @@ type InstitutionFeature = (typeof institutionFeatures)[number];
 
 export function InstitutionShowcase({ feature }: { feature: InstitutionFeature }) {
   return (
-    <ApiCodeShowcase
-      code={feature.showcase.code}
-      language={
-        "language" in feature.showcase ? feature.showcase.language : "json"
-      }
-    />
+    <ApiCodeShowcase code={feature.showcase.code} />
   );
 }
 
