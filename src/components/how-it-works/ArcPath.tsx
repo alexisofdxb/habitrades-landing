@@ -3,6 +3,41 @@
 import Image from "next/image";
 import { IconStream } from "./IconStream";
 import { Reveal, StepIcon, steps } from "./shared";
+import type { Step } from "./shared";
+
+function MobileStepLeadingIcon({
+  step,
+  index,
+}: {
+  step: Step;
+  index: number;
+}) {
+  if (index === 0) {
+    return (
+      <Image
+        src="/images/agent.svg"
+        alt=""
+        width={20}
+        height={20}
+        className="size-5 object-contain"
+      />
+    );
+  }
+
+  if (index === 2) {
+    return (
+      <Image
+        src="/images/hype.svg"
+        alt=""
+        width={20}
+        height={20}
+        className="size-5 object-contain"
+      />
+    );
+  }
+
+  return <StepIcon name={step.icon} size={20} />;
+}
 
 /* 4 — Semi-circular arc layout */
 export function Variant04ArcMobile() {
@@ -11,9 +46,18 @@ export function Variant04ArcMobile() {
       <div className="mt-14 space-y-3 min-[900px]:hidden">
         {steps.map((step, i) => (
           <Reveal key={step.title} delay={i * 0.05}>
-            <div className="rounded-xl border border-white/8 bg-[#131211] p-4">
-              <h3 className="text-[15px] font-medium">{step.title}</h3>
-              <p className="mt-1 text-[13px] text-white/45">{step.description}</p>
+            <div className="rounded-xl bg-[#171615] p-4">
+              <div className="flex items-center gap-2.5">
+                <span className="shrink-0 text-white">
+                  <MobileStepLeadingIcon step={step} index={i} />
+                </span>
+                <h3 className="text-[15px] font-medium leading-[1.25]">
+                  {step.title}
+                </h3>
+              </div>
+              <p className="mt-2 text-[13px] leading-[1.45] text-white/45">
+                {step.description}
+              </p>
             </div>
           </Reveal>
         ))}

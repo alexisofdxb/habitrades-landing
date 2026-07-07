@@ -93,7 +93,7 @@ const rightPanelClass = "flex h-full flex-col rounded-[20px] bg-[#111010] p-3 sm
 
 function PhoneShowcase({ alt, src }: { alt: string; src: string }) {
   return (
-    <div className="relative h-full min-h-[320px] overflow-hidden min-[900px]:min-h-0">
+    <div className="relative h-full min-h-[360px] overflow-hidden sm:min-h-[340px] min-[900px]:min-h-0">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/web/border.svg"
@@ -104,14 +104,14 @@ function PhoneShowcase({ alt, src }: { alt: string; src: string }) {
         className="pointer-events-none absolute inset-0 h-full w-full object-cover"
         draggable={false}
       />
-      <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden px-3 pt-4 sm:px-0 sm:pt-0">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={src}
           alt={alt}
           width={319}
           height={645}
-          className="pointer-events-none absolute left-1/2 top-[6%] z-10 h-auto w-[min(278px,78vw)] max-w-none -translate-x-1/2 sm:w-[294px] min-[900px]:w-[310px]"
+          className="pointer-events-none absolute left-1/2 top-[10%] z-10 h-auto w-[min(248px,72vw)] max-w-none -translate-x-1/2 sm:top-[8%] sm:w-[278px] min-[900px]:top-[6%] min-[900px]:w-[310px]"
           draggable={false}
         />
       </div>
@@ -184,43 +184,45 @@ export function TradingOSFeatureGrid() {
 
   return (
     <div id="platform" className="scroll-mt-24 text-left">
-      <div
-        role="tablist"
-        aria-label="Trading OS capabilities"
-        className="grid grid-cols-4 border-b border-white/[0.08]"
-      >
-        {tradingOSCards.map((card, index) => {
-          const Icon = icons[card.icon];
-          const isActive = activeIndex === index;
+      <div className="overflow-x-auto border-b border-white/[0.08] [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div
+          role="tablist"
+          aria-label="Trading OS capabilities"
+          className="flex min-w-max min-[640px]:grid min-[640px]:min-w-0 min-[640px]:grid-cols-4"
+        >
+          {tradingOSCards.map((card, index) => {
+            const Icon = icons[card.icon];
+            const isActive = activeIndex === index;
 
-          return (
-            <button
-              key={card.title}
-              type="button"
-              role="tab"
-              aria-selected={isActive}
-              onClick={() => selectCard(index)}
-              className={`relative flex items-center justify-center gap-2 px-2 py-5 transition-colors sm:gap-2.5 sm:px-4 sm:py-6 ${
-                isActive ? "text-white" : "text-white/40 hover:text-white/65"
-              }`}
-            >
-              <Icon active={isActive} />
-              <span className="whitespace-nowrap text-[11px] font-medium tracking-[-0.02em] min-[480px]:text-[13px] sm:text-[14px]">
-                {card.title}
-              </span>
-              {isActive && (
-                <motion.span
-                  layoutId="platform-tab-underline"
-                  className="absolute bottom-0 left-1/2 h-px w-[calc(100%-16px)] max-w-[132px] -translate-x-1/2 bg-[#b7ff4a]"
-                  transition={{ type: "spring", stiffness: 420, damping: 34 }}
-                />
-              )}
-            </button>
-          );
-        })}
+            return (
+              <button
+                key={card.title}
+                type="button"
+                role="tab"
+                aria-selected={isActive}
+                onClick={() => selectCard(index)}
+                className={`relative flex shrink-0 items-center justify-center gap-2 px-4 py-5 transition-colors min-[640px]:shrink min-[640px]:px-4 min-[640px]:py-6 sm:gap-2.5 ${
+                  isActive ? "text-white" : "text-white/40 hover:text-white/65"
+                }`}
+              >
+                <Icon active={isActive} />
+                <span className="whitespace-nowrap text-[13px] font-medium tracking-[-0.02em] sm:text-[14px]">
+                  {card.title}
+                </span>
+                {isActive && (
+                  <motion.span
+                    layoutId="platform-tab-underline"
+                    className="absolute bottom-0 left-1/2 h-px w-[calc(100%-20px)] max-w-[148px] -translate-x-1/2 bg-[#b7ff4a]"
+                    transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                  />
+                )}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
-      <div className="mt-10 grid gap-6 min-[900px]:mt-12 min-[900px]:grid-cols-[0.82fr_1.18fr] min-[900px]:items-stretch min-[900px]:gap-8 min-[1200px]:gap-10">
+      <div className="mt-12 grid gap-8 min-[640px]:mt-10 min-[900px]:mt-12 min-[900px]:grid-cols-[0.82fr_1.18fr] min-[900px]:items-stretch min-[900px]:gap-8 min-[1200px]:gap-10">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}

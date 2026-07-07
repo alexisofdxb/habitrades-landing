@@ -24,6 +24,8 @@ const companies: PartnerId[] = [
   "hyperliquid",
 ];
 
+const marqueeCompanies = [...companies, ...companies];
+
 const partnerMeta: Record<
   PartnerId,
   {
@@ -115,7 +117,10 @@ function PartnerLogo({ id }: { id: PartnerId }) {
 
 export default function LogoCloud() {
   return (
-    <section id="logos" className="flex px-4 py-20 sm:px-6 sm:py-28 min-[810px]:py-32">
+    <section
+      id="logos"
+      className="px-4 pb-16 pt-10 sm:px-6 sm:pb-20 sm:pt-12 min-[810px]:pb-24 min-[810px]:pt-14"
+    >
       <div className="mx-auto w-full max-w-[1080px]">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -132,18 +137,26 @@ export default function LogoCloud() {
           </p>
         </motion.div>
 
-        <div className="mx-auto mt-12 grid max-w-[900px] grid-cols-2 gap-y-10 min-[360px]:gap-x-4 sm:mt-14 sm:gap-x-8 sm:gap-y-14 min-[810px]:mt-16 min-[810px]:grid-cols-4 min-[810px]:gap-x-10 min-[810px]:gap-y-16">
-          {companies.map((company, index) => (
-            <motion.div
-              key={company}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.5, delay: (index % 4) * 0.06 }}
-            >
-              <PartnerLogo id={company} />
-            </motion.div>
-          ))}
+        <div className="relative mt-10 overflow-hidden sm:mt-12">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-y-0 left-0 z-10 w-8 bg-gradient-to-r from-[#0a0908] to-transparent sm:w-12"
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 bg-gradient-to-l from-[#0a0908] to-transparent sm:w-12"
+          />
+
+          <div className="logo-marquee-track">
+            {marqueeCompanies.map((company, index) => (
+              <div
+                key={`${company}-${index}`}
+                className="flex shrink-0 items-center px-6 sm:px-8 min-[810px]:px-10"
+              >
+                <PartnerLogo id={company} />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

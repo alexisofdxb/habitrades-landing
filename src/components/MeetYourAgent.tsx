@@ -43,11 +43,11 @@ export default function MeetYourAgent() {
               draggable={false}
             />
             <div
-              className="pointer-events-none absolute inset-x-[-4%] bottom-0 h-[48%] bg-gradient-to-t from-[#0a0908] from-25% via-[#0a0908]/85 to-transparent"
+              className="pointer-events-none absolute inset-x-[-4%] bottom-0 h-[54%] bg-gradient-to-t from-[#0a0908] from-20% via-[#0a0908]/88 to-transparent min-[810px]:h-[48%]"
               aria-hidden
             />
           </div>
-          <p className="pointer-events-none absolute left-1/2 bottom-[9%] z-10 w-[min(560px,calc(100vw-2rem))] -translate-x-1/2 px-4 text-center text-base leading-[1.45] text-[#858585]">
+          <p className="pointer-events-none absolute bottom-[4%] left-1/2 z-10 w-[min(560px,calc(100vw-2rem))] -translate-x-1/2 px-4 text-center text-base leading-[1.45] text-[#858585] min-[810px]:bottom-[9%]">
             Everyone gets an intelligent agent with memory, market
             awareness, and customizable risk policies that evolve alongside your
             strategy.
@@ -59,7 +59,7 @@ export default function MeetYourAgent() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.7, delay: 0.12 }}
-          className="mx-auto mt-16 w-full max-w-[1080px] text-left min-[810px]:mt-24"
+          className="mx-auto mt-20 w-full max-w-[1080px] text-left min-[810px]:mt-24"
         >
           <TradingOSFeatureGrid />
         </motion.div>

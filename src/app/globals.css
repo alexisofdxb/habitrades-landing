@@ -62,9 +62,37 @@ svg {
   color: rgba(255, 255, 255, 0.42);
 }
 
+@keyframes logo-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.logo-marquee-track {
+  display: flex;
+  width: max-content;
+  align-items: center;
+  animation: logo-marquee 36s linear infinite;
+  will-change: transform;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .logo-marquee-track {
+    animation: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    max-width: 56rem;
+    margin-inline: auto;
+    gap: 2.5rem 2rem;
   }
 
   *,

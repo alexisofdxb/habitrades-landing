@@ -12,7 +12,7 @@ const lines = [
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden px-4 pt-32 pb-24 sm:px-6 sm:pt-40 sm:pb-32 lg:pt-40 lg:pb-36">
+    <section className="relative overflow-hidden px-4 pt-32 pb-12 sm:px-6 sm:pt-40 sm:pb-14 lg:pt-40 lg:pb-16">
       {/* <div className="hero-glow absolute inset-x-0 top-0 -z-10 h-[760px]" /> */}
       <div className="mx-auto max-w-[1080px] text-center">
         <div className="mx-auto hidden max-w-3xl min-[810px]:block">

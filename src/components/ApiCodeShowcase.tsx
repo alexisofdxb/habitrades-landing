@@ -129,9 +129,17 @@ function highlightTypeScriptExpression(expression: string, keyPrefix: string) {
   });
 }
 
+function EmptyCodeSpacer() {
+  return (
+    <div aria-hidden="true" className="hidden min-[900px]:block">
+      <br />
+    </div>
+  );
+}
+
 function TypeScriptLine({ line }: { line: string }) {
   if (line.length === 0) {
-    return <br />;
+    return <EmptyCodeSpacer />;
   }
 
   const objectKeyMatch = line.match(/^(\s*)([A-Za-z_$][\w$]*)(\s*:\s*)(.*)$/);
@@ -152,7 +160,7 @@ function TypeScriptLine({ line }: { line: string }) {
 
 function JsonLine({ line }: { line: string }) {
   if (line.length === 0) {
-    return <br />;
+    return <EmptyCodeSpacer />;
   }
 
   const keyMatch = line.match(/^(\s*)("(?:\\.|[^"\\])*")(\s*:\s*)(.*)$/);
@@ -218,7 +226,7 @@ function CodeBlock({
   const Line = language === "typescript" ? TypeScriptLine : JsonLine;
 
   return (
-    <pre className="w-full overflow-x-auto font-mono text-[12px] leading-[1.6] sm:text-[13px] min-[1200px]:text-[14px]">
+    <pre className="w-full overflow-x-auto font-mono text-[11px] leading-[1.45] sm:text-[12px] sm:leading-[1.5] min-[900px]:text-[13px] min-[900px]:leading-[1.6] min-[1200px]:text-[14px]">
       {code.split("\n").map((line, index) => (
         <Line key={`${index}-${line}`} line={line} />
       ))}
@@ -231,7 +239,7 @@ export default function ApiCodeShowcase({
   language = "json",
 }: ApiCodeShowcaseProps) {
   return (
-    <div className="h-full min-h-0 px-5 py-5 sm:px-7 sm:py-6 min-[1200px]:px-9 min-[1200px]:py-7">
+    <div className="h-full min-h-0 px-4 py-4 sm:px-6 sm:py-5 min-[900px]:px-7 min-[900px]:py-6 min-[1200px]:px-9 min-[1200px]:py-7">
       <CodeBlock code={code} language={language} />
     </div>
   );
