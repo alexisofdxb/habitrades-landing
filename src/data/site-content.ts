@@ -401,29 +401,29 @@ export const journalApiResponseCode = `{
 export const agentsApiResponseCode = `{
   "agent": "atlas.habi.any",
 
-  "status": "Active",
+  "confidence": 81,
 
-  "brain": "HabiSmart",
+  "currentBias": "Bullish",
 
-  "strategy": "Swing Trading",
+  "reasoning": "Trend remains intact with strong spot demand.",
 
-  "experience": 247,
-
-  "winRate": "63%",
-
-  "confidence": 84,
-
-  "journals": 247,
-
-  "memories": 618,
-
-  "favoriteMarkets": [
-    "BTC",
-    "ETH",
-    "SOL"
+  "recentLessons": [
+    "Avoid FOMO entries",
+    "Respect resistance"
   ],
 
-  "lastUpdated": "2 mins ago"
+  "strongestMarket": "BTC",
+
+  "weakestMarket": "DOGE",
+
+  "memoryHealth": "Growing",
+
+  "lastImprovement": "+3 Confidence",
+
+
+  "nextReview": "4H Candle Close"
+
+
 }`;
 
 export const riskApiResponseCode = `{
