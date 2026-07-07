@@ -5,29 +5,39 @@ import { motion, useReducedMotion } from "framer-motion";
 
 const adxFeatures = [
   {
-    title: "Premium features",
-    description: "$ADX unlocks premium features of keyAura",
+    title: "Native utility",
+    description: "Powers plans, credits and core Habitrades features",
     icon: "/images/premium-icon.svg",
   },
   {
-    title: "33% staked",
-    description: "1/3 of the $ADX total supply is staked",
+    title: "Agent creation",
+    description: "Create and activate trading agents",
+    icon: "/images/reward-icon.svg",
+  },
+  {
+    title: "Strategy marketplace",
+    description: "Access, purchase and deploy strategies",
     icon: "/images/stack-icon.svg",
   },
   {
-    title: "Burning mechanism",
-    description: "Built-in",
-    icon: "/images/burning-icon.svg",
-  },
-  {
-    title: "Fully unlocked",
-    description: "Max supply already minted",
+    title: "Vault operations",
+    description: "Support vault creation and management",
     icon: "/images/unlocked-icon.svg",
   },
   {
-    title: "Staking rewards",
-    description: "Earn rewards by staking $ADX",
-    icon: "/images/reward-icon.svg",
+    title: "Protocol buyback",
+    description: "Platform fees contribute to HABI buybacks",
+    icon: "/images/burning-icon.svg",
+  },
+  {
+    title: "Token",
+    description: "Fully unlocked, community-backed, no team allocation",
+    icon: "/images/unlocked-icon.svg",
+  },
+  {
+    title: "DAO",
+    description: "Use the token to govern the protocol",
+    icon: "/images/dao-icon.svg",
   },
 ] as const;
 
@@ -43,7 +53,7 @@ export default function ADXHeartbeat() {
   };
 
   return (
-    <section className="px-4 py-16 sm:px-6 sm:py-20 min-[1200px]:py-24">
+    <section className="px-4 py-24 sm:px-6 sm:py-32 min-[1200px]:py-36">
       <div className="mx-auto w-full max-w-[1080px]">
         <motion.div
           initial={initial}
@@ -55,10 +65,13 @@ export default function ADXHeartbeat() {
         >
           <p className="text-sm leading-[1.3] text-[#858585]">
             <span className="text-white/35">{`// `}</span>
-            Features
+            Economy
           </p>
-          <h2 className="mt-4 text-[28px] font-normal leading-[1.12] tracking-[-0.03em] sm:text-[32px] min-[1200px]:text-[36px]">
-            $ADX <span className="text-[#858585]">is the heartbeat</span>
+          <h2 className="mt-4 text-[28px] leading-[1.12] tracking-[-0.03em] sm:text-[32px] min-[1200px]:text-[36px]">
+            <span className="block font-medium text-white">$HABI</span>
+            <span className="block font-normal text-[#858585]">
+              powering the next generation of agentic trading.
+            </span>
           </h2>
         </motion.div>
 
@@ -133,7 +146,7 @@ export default function ADXHeartbeat() {
               >
                 <Image
                   src="/images/gemini-coin.svg"
-                  alt="$ADX token"
+                  alt="$HABI token"
                   fill
                   sizes="(max-width: 809px) 220px, 310px"
                   className="scale-125 object-contain drop-shadow-[0_30px_22px_rgba(0,0,0,0.86)]"

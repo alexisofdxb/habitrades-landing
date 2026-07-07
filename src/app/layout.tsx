@@ -10,7 +10,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Habi - Agentic trading with habits",
+  title: "Habitrades - Agentic trading with habits",
   description:
     "Build AI trading agents around your own strategy, risk, and market habits.",
 };

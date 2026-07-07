@@ -1,36 +1,37 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
+import { getBlogCategoryLabel, type BlogPost } from "@/src/data/blog-posts";
 
-const ways = [
-  {
-    title: "Command line",
-    description:
-      "Install via npm and start coding instantly from your terminal.",
-    action: "npm install -g exact",
-    image: "/images/three-ways-command.jpg",
-    variant: "terminal",
-  },
-  {
-    title: "Desktop app",
-    description:
-      "Native macOS, Windows, and Linux app with full offline support.",
-    action: "Download for macOS",
-    image: "/images/three-ways-desktop.jpg",
-    variant: "desktop",
-  },
-  {
-    title: "Browser",
-    description:
-      "Try Exact instantly in your browser. No installation required.",
-    action: "Open in browser",
-    image: "/images/three-ways-browser.jpg",
-    variant: "browser",
-  },
-] as const;
+function BlogVisual({
+  image,
+  title,
+  typeLabel,
+}: {
+  image: string;
+  title: string;
+  typeLabel: string;
+}) {
+  return (
+    <div className="relative aspect-[16/10] overflow-hidden rounded-lg bg-[#151515]">
+      <Image
+        src={image}
+        alt={title}
+        fill
+        sizes="(max-width: 767px) calc(100vw - 32px), 360px"
+        className="object-cover"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+      <span className="absolute left-3 top-3 rounded-full border border-white/10 bg-black/50 px-2.5 py-1 text-[11px] font-medium tracking-[-0.02em] text-white/80 backdrop-blur-sm">
+        {typeLabel}
+      </span>
+    </div>
+  );
+}
 
-function ClipboardIcon() {
+function ArrowIcon() {
   return (
     <svg
       width="18"
@@ -43,68 +44,17 @@ function ClipboardIcon() {
       strokeLinejoin="round"
       aria-hidden="true"
     >
-      <path d="M6.5 4.5h5" />
-      <path d="M6 3h6l1 1.5V15H5V4.5L6 3Z" />
-      <path d="M7 7.5h4M7 10.5h4" />
+      <path d="M4 9h10" />
+      <path d="M10 5l4 4-4 4" />
     </svg>
   );
 }
 
-function DownloadIcon() {
-  return (
-    <svg
-      width="22"
-      height="22"
-      viewBox="0 0 22 22"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.9"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M11 3.5v10" />
-      <path d="m6.8 9.8 4.2 4.2 4.2-4.2" />
-      <path d="M4 16.5v2h14v-2" />
-    </svg>
-  );
-}
+type ThreeWaysProps = {
+  posts: BlogPost[];
+};
 
-function ExternalIcon() {
-  return (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 20 20"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M8 5H5v10h10v-3" />
-      <path d="M11 5h4v4" />
-      <path d="m9 11 6-6" />
-    </svg>
-  );
-}
-
-function WayVisual({ image, title }: Pick<(typeof ways)[number], "image" | "title">) {
-  return (
-    <div className="relative aspect-[1.1/1] overflow-hidden rounded-lg bg-[#151515] sm:aspect-[1.08/1]">
-      <Image
-        src={image}
-        alt={`${title} Exact interface`}
-        fill
-        sizes="(max-width: 767px) calc(100vw - 32px), 360px"
-        className="object-cover"
-      />
-    </div>
-  );
-}
-
-export default function ThreeWays() {
+export default function ThreeWays({ posts }: ThreeWaysProps) {
   const shouldReduceMotion = useReducedMotion();
   const initial = shouldReduceMotion
     ? { opacity: 1, y: 0, filter: "blur(0px)" }
@@ -116,28 +66,40 @@ export default function ThreeWays() {
   };
 
   return (
-    <section className="px-4 py-16 sm:px-6 sm:py-20 min-[1200px]:py-24">
+    <section id="blog" className="scroll-mt-24 px-4 py-24 sm:px-6 sm:py-32 min-[1200px]:py-36">
       <div className="mx-auto w-full max-w-[1080px]">
         <motion.div
           initial={initial}
           whileInView={animate}
           viewport={{ once: true, margin: "-80px" }}
           transition={transition}
+          className="flex flex-col gap-6 min-[760px]:flex-row min-[760px]:items-end min-[760px]:justify-between"
         >
-          <p className="text-sm leading-[1.3] text-[#858585]">
-            <span className="text-white/35">{`// `}</span>
-            Three ways to code
-          </p>
-          <h2 className="mt-4 text-[32px] font-normal leading-[1.12] tracking-[-0.03em] min-[810px]:text-[36px] min-[1200px]:text-[36px]">
-            Start coding your way.
-            <span className="text-[#858585]"> Choose what works best.</span>
-          </h2>
+          <div>
+            <p className="text-sm leading-[1.3] text-[#858585]">
+              <span className="text-white/35">{`// `}</span>
+              Blog
+            </p>
+            <h2 className="mt-4 text-[32px] leading-[1.12] tracking-[-0.03em] min-[810px]:text-[36px] min-[1200px]:text-[36px]">
+              <span className="block font-medium text-white">Latest from Habitrades.</span>
+              <span className="block font-normal text-[#858585]">
+                Ideas, guides, and product updates.
+              </span>
+            </h2>
+          </div>
+          <Link
+            href="/blog"
+            className="inline-flex h-11 items-center gap-2 rounded-lg border border-white/10 px-4 text-[14px] font-medium text-white transition-colors hover:border-white/20 hover:bg-white/5"
+          >
+            View all posts
+            <ArrowIcon />
+          </Link>
         </motion.div>
 
-        <div className="mt-10 grid gap-10 min-[760px]:mt-14 min-[760px]:grid-cols-3 min-[760px]:gap-4 min-[1000px]:gap-6">
-          {ways.map((way, index) => (
+        <div className="mt-10 grid gap-10 min-[760px]:mt-14 min-[760px]:grid-cols-3 min-[760px]:items-stretch min-[760px]:gap-4 min-[1000px]:gap-6">
+          {posts.map((post, index) => (
             <motion.article
-              key={way.title}
+              key={post.slug}
               initial={initial}
               whileInView={animate}
               viewport={{ once: true, margin: "-70px" }}
@@ -146,27 +108,29 @@ export default function ThreeWays() {
                 delay: shouldReduceMotion ? 0 : index * 0.08,
               }}
               style={{ willChange: "transform, opacity, filter" }}
+              className="flex h-full flex-col"
             >
-              <WayVisual image={way.image} title={way.title} />
-              <h3 className="mt-5 text-[20px] font-medium leading-none tracking-[-0.04em] min-[760px]:text-[20px] min-[1000px]:text-[20px]">
-                {way.title}
-              </h3>
-              <p className="mt-2 max-w-[340px] text-[14px] leading-[1.25] tracking-[-0.02em] text-[#858585] min-[760px]:text-[14px] min-[1000px]:text-[14px]">
-                {way.description}
-              </p>
-              <a
-                href="#"
-                className={`mt-5 inline-flex h-12 items-center gap-4 rounded-lg px-3 text-[14px] font-semibold tracking-[-0.02em] transition-transform hover:scale-[1.025] ${
-                  way.variant === "terminal"
-                    ? "bg-[#171615] text-white"
-                    : "bg-white text-[#111]"
-                }`}
-              >
-                <span>{way.action}</span>
-                {way.variant === "terminal" && <ClipboardIcon />}
-                {way.variant === "desktop" && <DownloadIcon />}
-                {way.variant === "browser" && <ExternalIcon />}
-              </a>
+              <BlogVisual
+                image={post.image}
+                title={post.title}
+                typeLabel={getBlogCategoryLabel(post.type)}
+              />
+              <div className="flex flex-1 flex-col pt-5">
+                <p className="text-[12px] tracking-[-0.02em] text-white/35">{post.date}</p>
+                <h3 className="mt-2 line-clamp-2 min-h-[46px] text-[20px] font-medium leading-[1.15] tracking-[-0.04em]">
+                  {post.title}
+                </h3>
+                <p className="mt-2 line-clamp-3 min-h-[60px] flex-1 text-[14px] leading-[1.35] tracking-[-0.02em] text-[#858585]">
+                  {post.excerpt}
+                </p>
+                <Link
+                  href={`/blog/${post.slug}`}
+                  className="mt-auto inline-flex h-10 w-fit items-center gap-2 rounded-lg bg-[#141312] px-3.5 text-[14px] font-medium tracking-[-0.02em] text-white/85 transition-colors hover:bg-[#171615] hover:text-white"
+                >
+                  <span>Read article</span>
+                  <ArrowIcon />
+                </Link>
+              </div>
             </motion.article>
           ))}
         </div>

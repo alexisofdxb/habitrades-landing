@@ -17,7 +17,7 @@ export default function WhyHabi() {
   return (
     <section
       ref={sectionRef}
-      id="why-habi"
+      id="why-habitrades"
       className="relative  px-4 sm:px-6  "
     >
       <div className="mx-auto w-full max-w-[1080px]">
@@ -26,13 +26,15 @@ export default function WhyHabi() {
           className="mb-10 max-w-[430px] sm:mb-14"
         >
           <p className="text-base leading-none mb-2.5 tracking-[-0.02em] text-white/40">
-            {"// Why Habi?"}
+            {"// Why Habitrades?"}
           </p>
-          <h2 className="text-[29px] font-normal leading-[1.2] tracking-[-0.03em] min-[1200px]:text-[36px] min-[1200px]:leading-[1.1]">
-            Your strategy,
-            <br /> automated.
-            <br />
-            <span className="text-white/40">Your edge, protected.</span>
+          <h2 className="text-[29px] leading-[1.2] tracking-[-0.03em] min-[1200px]:text-[36px] min-[1200px]:leading-[1.1]">
+            <span className="block font-medium text-white">
+              Your strategy,
+              <br />
+              automated.
+            </span>
+            <span className="block font-normal text-white/40">Your edge, protected.</span>
           </h2>
         </motion.div>
 
@@ -52,7 +54,7 @@ export default function WhyHabi() {
               >
                 <Image
                   src="/images/automation.png"
-                  alt="Habi across Hyperliquid and Polymarket"
+                  alt="Habitrades across Hyperliquid and Polymarket"
                   fill
                   sizes="(max-width: 809px) calc(100vw - 80px), 580px"
                   className="object-cover object-bottom-right"
@@ -64,15 +66,15 @@ export default function WhyHabi() {
                 Your agent. Two markets. Infinite setups.
               </h3>
               <p className="mt-4 max-w-[350px] text-base leading-[1.3] text-white/45">
-                From Hyperliquid perps to Polymarket events, Habi lets your
+                From Hyperliquid perps to Polymarket events, Habitrades lets your
                 agent scan price action, monitor probabilities, build trade
                 plans, and execute only within your rules.
               </p>
               <a
-                href="#pricing"
+                href="https://app.tryhabi.xyz/?source=pwa"
                 className="mt-6 rounded-lg bg-white px-4 py-3 text-base font-medium leading-none text-[#111] transition-transform hover:scale-[1.025]"
               >
-                Try Habi
+                Install Habitrades
               </a>
             </div>
           </article>

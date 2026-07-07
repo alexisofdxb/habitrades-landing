@@ -12,7 +12,7 @@ export default function HabiBrand({
   return (
     <a
       href="#"
-      aria-label="Habi home"
+      aria-label="Habitrades home"
       className={`inline-flex items-center text-white ${compact ? "gap-2" : "gap-2.5"} ${className}`}
     >
       <svg
@@ -36,7 +36,7 @@ export default function HabiBrand({
             : "text-[24px] font-normal leading-none tracking-[-0.035em]"
         }
       >
-        {brandName || "Habi"}
+        {brandName || "Habitrades"}
       </span>
     </a>
   );

@@ -19,7 +19,7 @@ export default function FAQ() {
   return (
     <section
       id="faq"
-      className="scroll-mt-24 px-4 py-16 sm:px-6 sm:py-20 lg:min-h-[760px] lg:py-[70px]"
+      className="scroll-mt-24 px-4 py-24 sm:px-6 sm:py-32 lg:min-h-[760px] lg:py-36"
     >
       <div className="mx-auto grid w-full max-w-[1080px] min-w-0 gap-10 sm:gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,520px)] lg:gap-14">
         <motion.div
@@ -33,9 +33,9 @@ export default function FAQ() {
           <p className="text-[14px] leading-none tracking-[-0.02em] text-white/40">
             {"// FAQ"}
           </p>
-          <h2 className="mt-5 text-[32px] font-normal leading-[1.2] tracking-[-0.03em] min-[1200px]:text-[36px] min-[1200px]:leading-[1.1]">
-            Questions?{" "}
-            <span className="text-white/40">We&apos;ve got answers.</span>
+          <h2 className="mt-5 text-[32px] leading-[1.2] tracking-[-0.03em] min-[1200px]:text-[36px] min-[1200px]:leading-[1.1]">
+            <span className="block font-medium text-white">Questions?</span>
+            <span className="block font-normal text-white/40">We&apos;ve got answers.</span>
           </h2>
         </motion.div>
         <div className="flex min-w-0 flex-col gap-3 sm:gap-5">

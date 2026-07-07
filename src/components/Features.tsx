@@ -1,14 +1,21 @@
 "use client";
 
 import { useState, type UIEvent } from "react";
-import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
-import { coreFeatures, featureUseCase } from "@/src/data/site-content";
+import { ProductShowcaseFrame } from "@/src/components/ProductShowcaseFrame";
+import {
+  InstitutionShowcase,
+  isApiShowcase,
+} from "@/src/components/InstitutionShowcase";
+import {
+  institutionFeatures,
+  institutionsSection,
+} from "@/src/data/site-content";
 
 export default function Features() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [mobileIndex, setMobileIndex] = useState(0);
-  const activeFeature = coreFeatures[activeIndex];
+  const activeFeature = institutionFeatures[activeIndex];
 
   function handleMobileSliderScroll(event: UIEvent<HTMLDivElement>) {
     const slider = event.currentTarget;
@@ -20,13 +27,15 @@ export default function Features() {
 
     const slideWidth = firstSlide.offsetWidth + 16;
     const nextIndex = Math.round(slider.scrollLeft / slideWidth);
-    setMobileIndex(Math.min(coreFeatures.length - 1, Math.max(0, nextIndex)));
+    setMobileIndex(
+      Math.min(institutionFeatures.length - 1, Math.max(0, nextIndex)),
+    );
   }
 
   return (
     <section
-      id="features"
-      className="scroll-mt-24 px-4 pt-20 pb-12 sm:px-6 min-[810px]:px-10 min-[810px]:py-24 min-[1200px]:pb-28"
+      id="use-cases"
+      className="scroll-mt-24 px-4 py-24 sm:px-6 sm:py-32 min-[810px]:py-36"
     >
       <div className="mx-auto w-full max-w-[1080px]">
         <motion.div
@@ -34,15 +43,22 @@ export default function Features() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.65 }}
-          className="max-w-[560px]"
+          className="grid gap-8 min-[810px]:grid-cols-[minmax(0,0.46fr)_minmax(0,0.54fr)] min-[810px]:items-end min-[810px]:gap-12 min-[1200px]:gap-16"
         >
-          <p className="hidden text-base leading-[1.3] text-[#858585] min-[640px]:block">
-            <span className="text-white/35">{`// `}</span>
-            Core Features
+          <div>
+            <p className="text-[14px] leading-none tracking-[-0.02em] text-white/40">
+              {"// Institutions"}
+            </p>
+            <h2 className="mt-5 text-[28px] leading-[1.1] tracking-[-0.04em] min-[640px]:text-[32px] min-[1200px]:text-[36px] min-[1200px]:leading-[1.1]">
+              <span className="block font-medium text-white">Beyond trading.</span>
+              <span className="block font-normal text-[#858585]">
+                Built for institutions.
+              </span>
+            </h2>
+          </div>
+          <p className="max-w-[480px] text-[14px] leading-[1.6] text-[#858585] sm:text-[15px] min-[810px]:justify-self-end min-[810px]:pb-1">
+            {institutionsSection.description}
           </p>
-          <h2 className="mt-0 text-[20px] font-normal leading-[1.1] tracking-[-0.04em] min-[640px]:mt-4 min-[640px]:text-[32px] min-[1200px]:text-[36px] min-[1200px]:leading-[1.1]">
-            One tool. <span className="text-[#858585]">Every use case.</span>
-          </h2>
         </motion.div>
 
         <motion.div
@@ -51,17 +67,17 @@ export default function Features() {
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.65, delay: 0.08 }}
           role="tablist"
-          aria-label="Core features"
-          className="mt-10 hidden w-fit gap-1 rounded-xl bg-[#171615] p-1.5 min-[640px]:mt-14 min-[640px]:flex"
+          aria-label="Institution capabilities"
+          className="mt-10 hidden w-full max-w-full gap-1 overflow-x-auto rounded-xl bg-[#171615] p-1.5 [scrollbar-width:none] min-[640px]:mt-14 min-[640px]:flex min-[640px]:w-fit [&::-webkit-scrollbar]:hidden"
         >
-          {coreFeatures.map((feature, index) => (
+          {institutionFeatures.map((feature, index) => (
             <button
-              key={feature.title}
+              key={feature.tabLabel}
               type="button"
               role="tab"
               aria-selected={activeIndex === index}
               onClick={() => setActiveIndex(index)}
-              className={`relative rounded-lg px-2 py-2 text-left text-sm font-medium transition-colors min-[640px]:min-w-[92px] min-[640px]:px-4 min-[640px]:text-center min-[810px]:text-sm ${
+              className={`relative shrink-0 rounded-lg px-2 py-2 text-left text-sm font-medium transition-colors min-[640px]:px-3 min-[640px]:text-center min-[810px]:px-4 min-[810px]:text-sm ${
                 activeIndex === index
                   ? "text-white"
                   : "text-white hover:text-white"
@@ -74,7 +90,7 @@ export default function Features() {
                   transition={{ type: "spring", stiffness: 420, damping: 34 }}
                 />
               )}
-              <span className="relative z-10">{feature.title}</span>
+              <span className="relative z-10">{feature.tabLabel}</span>
             </button>
           ))}
         </motion.div>
@@ -90,44 +106,31 @@ export default function Features() {
             onScroll={handleMobileSliderScroll}
             className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
-            {coreFeatures.map((feature) => (
+            {institutionFeatures.map((feature) => (
               <article
-                key={feature.title}
+                key={feature.tabLabel}
                 data-feature-slide
                 className="w-full shrink-0 snap-start"
               >
-                <div className="relative aspect-[1.42/1] overflow-hidden rounded-lg bg-[#111]">
-                  <Image
-                    src="/images/feature-wide.png"
-                    alt=""
-                    fill
-                    sizes="calc(100vw - 32px)"
-                    className="object-cover"
-                  />
-                  <div className="absolute inset-x-[5%] bottom-[8%] top-[8%] overflow-hidden rounded-md">
-                    <Image
-                      src={feature.image}
-                      alt={feature.alt}
-                      fill
-                      sizes="calc(100vw - 64px)"
-                      className="object-contain"
-                    />
-                  </div>
-                </div>
+                <ProductShowcaseFrame
+                  backgroundSrc="/images/feature-wide.png"
+                  foregroundAlt={feature.alt}
+                  variant={isApiShowcase(feature) ? "code" : "image"}
+                  foreground={<InstitutionShowcase feature={feature} />}
+                />
 
                 <div className="mt-5">
                   <p className="text-[12px] leading-[1.3] text-[#858585]">
-                    Debugging and refactoring
+                    {feature.headline}
                   </p>
                   <p className="mt-4 max-w-[330px] text-[18px] font-normal leading-[1.08] tracking-[-0.035em] text-[#f4f4f2]">
-                    Build frontend and backend seamlessly. Exact understands your
-                    entire stack from React components to database queries.
+                    {feature.description}
                   </p>
                   <a
-                    href={featureUseCase.href}
+                    href={institutionsSection.primaryCta.href}
                     className="mt-5 inline-flex h-9 items-center rounded-md bg-white px-3 text-[12px] font-medium text-[#111] transition-transform hover:scale-[1.025]"
                   >
-                    {featureUseCase.cta}
+                    {institutionsSection.primaryCta.label}
                   </a>
                 </div>
               </article>
@@ -136,9 +139,9 @@ export default function Features() {
 
           <div className="mt-3 flex justify-center">
             <div className="flex h-6 items-center gap-1.5 rounded-full bg-white/20 px-2">
-              {coreFeatures.map((feature, index) => (
+              {institutionFeatures.map((feature, index) => (
                 <span
-                  key={feature.title}
+                  key={feature.tabLabel}
                   className={`block size-2 rounded-full transition-colors ${
                     index === mobileIndex ? "bg-white" : "bg-white/45"
                   }`}
@@ -153,34 +156,27 @@ export default function Features() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.7, delay: 0.16 }}
-          className="relative mt-4 hidden aspect-[1.05/1] overflow-hidden rounded-lg bg-[#111] min-[640px]:block sm:mt-6 min-[810px]:aspect-[1.784/1]"
+          className="relative mt-4 hidden min-[640px]:block sm:mt-6"
         >
-          <Image
-            src="/images/feature-wide.png"
-            alt=""
-            fill
-            sizes="(max-width: 1200px) calc(100vw - 32px), 1128px"
-            className="object-cover"
+          <ProductShowcaseFrame
+            backgroundSrc="/images/feature-wide.png"
+            foregroundAlt={activeFeature.alt}
+            variant={isApiShowcase(activeFeature) ? "code" : "image"}
+            foreground={
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeFeature.tabLabel}
+                  initial={{ opacity: 0, y: 24, scale: 0.985 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -12, scale: 0.99 }}
+                  transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                  className="relative h-full w-full"
+                >
+                  <InstitutionShowcase feature={activeFeature} />
+                </motion.div>
+              </AnimatePresence>
+            }
           />
-          <div className="absolute inset-0 bg-black/5" />
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeFeature.title}
-              initial={{ opacity: 0, y: 24, scale: 0.985 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -12, scale: 0.99 }}
-              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute inset-x-[4%] bottom-[-1%] top-[0%] overflow-hidden rounded-md border border-white/10 sm:rounded-lg"
-            >
-              <Image
-                src={activeFeature.image}
-                alt={activeFeature.alt}
-                fill
-                sizes="(max-width: 1200px) 88vw, 980px"
-                className="object-contain"
-              />
-            </motion.div>
-          </AnimatePresence>
         </motion.div>
 
         <motion.div
@@ -191,18 +187,28 @@ export default function Features() {
           className="mt-6 hidden items-start gap-8 min-[640px]:grid min-[810px]:grid-cols-[minmax(0,1fr)_auto] min-[810px]:items-end min-[810px]:gap-14"
         >
           <div className="min-w-0">
-            <p className="text-base leading-[1.3] text-[#858585]">
-              {featureUseCase.eyebrow}
-            </p>
-            <p className="mt-6 max-w-[910px] text-[20px] font-normal leading-[1.22] tracking-[-0.03em] text-[#f4f4f2] sm:text-[20px] min-[1200px]:text-[30px]">
-              {featureUseCase.description}
-            </p>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeFeature.tabLabel}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <p className="text-base leading-[1.3] text-[#858585]">
+                  {activeFeature.headline}
+                </p>
+                <p className="mt-6 max-w-[910px] text-[20px] font-normal leading-[1.22] tracking-[-0.03em] text-[#f4f4f2] sm:text-[20px] min-[1200px]:text-[30px]">
+                  {activeFeature.description}
+                </p>
+              </motion.div>
+            </AnimatePresence>
           </div>
           <a
-            href={featureUseCase.href}
+            href={institutionsSection.primaryCta.href}
             className="inline-flex w-fit shrink-0 rounded-[10px] bg-white p-[7px] text-base font-medium text-[#111] transition-transform hover:scale-[1.025]"
           >
-            {featureUseCase.cta}
+            {institutionsSection.primaryCta.label}
           </a>
         </motion.div>
       </div>

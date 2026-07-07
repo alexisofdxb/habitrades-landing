@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
+import HabitradesLogo from "@/src/components/HabitradesLogo";
 import { navItems } from "@/src/data/site-content";
 
 const container = {
@@ -43,19 +43,8 @@ export default function Navbar() {
   return (
     <header className="fixed inset-x-0 top-0 z-[9999] bg-[#0a0908] px-4 sm:px-6 min-[810px]:px-10">
       <nav className="mx-auto flex h-16 max-w-[1080px] items-center justify-between px-0 text-white">
-        <a
-          href="#"
-          aria-label="Habi home"
-          className="relative block h-8 w-[88px] shrink-0"
-        >
-          <Image
-            src="/images/Habi white.svg"
-            alt="Habi"
-            fill
-            sizes="88px"
-            className="object-contain"
-            priority
-          />
+        <a href="/" aria-label="Habitrades home" className="shrink-0">
+          <HabitradesLogo />
         </a>
 
         <div className="hidden items-center gap-2 text-base text-[#dedede] lg:flex xl:gap-4 pl-8">
@@ -71,7 +60,7 @@ export default function Navbar() {
         </div>
 
         <a
-          href="#pricing"
+          href="https://app.tryhabi.xyz"
           className="hidden rounded-lg bg-white px-2 py-2 leading-none text-base font-medium text-black transition-transform hover:scale-[1.03] lg:block"
         >
           Get Started
@@ -175,7 +164,7 @@ export default function Navbar() {
 
               <motion.a
                 variants={menuItemVariants}
-                href="#pricing"
+                href="https://app.tryhabi.xyz"
                 onClick={() => setOpen(false)}
                 className="
                   mt-8

@@ -1,72 +1,16 @@
 "use client";
 
+import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
-import { benefits } from "@/src/data/site-content";
+import { benefits, benefitsFeaturedTitles } from "@/src/data/site-content";
 
-type BenefitIcon = (typeof benefits)[number]["icon"];
-
-function Icon({ name }: { name: BenefitIcon }) {
-  const props = {
-    width: 28,
-    height: 28,
-    viewBox: "0 0 28 28",
-    fill: "none",
-    stroke: "currentColor",
-    strokeWidth: 1.7,
-    strokeLinecap: "round" as const,
-    strokeLinejoin: "round" as const,
-    "aria-hidden": true,
-  };
-
-  if (name === "receipt") {
-    return (
-      <svg {...props}>
-        <path d="M5.5 5.5h17v17l-2.8-1.7-2.8 1.7-2.9-1.7-2.9 1.7-2.8-1.7-2.8 1.7v-17Z" />
-        <path d="M9 10.5h10M9 15h10" />
-      </svg>
-    );
+const featuredBenefits = benefitsFeaturedTitles.map((title) => {
+  const benefit = benefits.find((item) => item.title === title);
+  if (!benefit) {
+    throw new Error(`Missing featured benefit: ${title}`);
   }
-
-  if (name === "steps") {
-    return (
-      <svg {...props}>
-        <path d="M4 21h7v-5h6v-5h7" />
-      </svg>
-    );
-  }
-
-  if (name === "send") {
-    return (
-      <svg {...props}>
-        <path d="m4.8 12.5 18-7.3-7.3 18-3.2-7.5-7.5-3.2Z" />
-        <path d="m12.3 15.7 4.8-4.8" />
-      </svg>
-    );
-  }
-
-  if (name === "hash") {
-    return (
-      <svg {...props}>
-        <path d="M10.5 4 8 24M20 4l-2.5 20M4.5 10.5h19M3.5 17.5h19" />
-      </svg>
-    );
-  }
-
-  if (name === "chat") {
-    return (
-      <svg {...props}>
-        <path d="M5 6.5h18v14H14l-5.5 3v-3H5v-14Z" />
-      </svg>
-    );
-  }
-
-  return (
-    <svg {...props}>
-      <path d="M8.2 11.5a5.8 5.8 0 0 1 11.6 0c0 7 2.7 7 2.7 8.5h-17c0-1.5 2.7-1.5 2.7-8.5Z" />
-      <path d="M11.5 22.5a2.8 2.8 0 0 0 5 0" />
-    </svg>
-  );
-}
+  return benefit;
+});
 
 export default function Benefits() {
   const shouldReduceMotion = useReducedMotion();
@@ -80,7 +24,7 @@ export default function Benefits() {
   };
 
   return (
-    <section id="benefits" className="scroll-mt-24 px-4 sm:px-6 pt-10 sm:pt-0">
+    <section id="benefits" className="scroll-mt-24 px-4 py-24 sm:px-6 sm:py-32 min-[810px]:py-36">
       <div className="mx-auto w-full max-w-[1080px]">
         <motion.div
           initial={revealInitial}
@@ -93,13 +37,83 @@ export default function Benefits() {
           <p className="text-[14px] leading-none tracking-[-0.02em] text-white/40">
             {"// Benefits"}
           </p>
-          <h2 className="mt-5 text-[32px] font-normal leading-[1.2] tracking-[-0.03em] min-[1200px]:text-[36px] min-[1200px]:leading-[1.1]">
-            Ship faster.
-            <span className="text-white/40"> Code better.</span>
+          <h2 className="mt-5 text-[32px] leading-[1.2] tracking-[-0.03em] min-[1200px]:text-[36px] min-[1200px]:leading-[1.1]">
+            <span className="block font-medium text-white">Execute with proof.</span>
+            <span className="block font-normal text-white/40">Trade with guardrails.</span>
           </h2>
         </motion.div>
-        <div className="mt-10 grid gap-3.5 sm:mt-14 sm:grid-cols-2 lg:grid-cols-3">
-          {benefits.map((benefit, index) => (
+        <div className="mt-10 grid grid-cols-4 gap-2 sm:mt-14 sm:gap-3 min-[1000px]:gap-3.5">
+          {featuredBenefits.map((benefit, index) => {
+            const isNaturalLayout =
+              "imageLayout" in benefit && benefit.imageLayout === "natural";
+            const imagePlacement =
+              isNaturalLayout &&
+              "imagePlacement" in benefit &&
+              benefit.imagePlacement === "bottom"
+                ? "bottom"
+                : "top";
+
+            const phoneWidth =
+              isNaturalLayout && "imageWidth" in benefit ? benefit.imageWidth : 319;
+            const phoneHeight =
+              isNaturalLayout && "imageHeight" in benefit ? benefit.imageHeight : 645;
+            const phoneScale =
+              isNaturalLayout && "imageScale" in benefit ? benefit.imageScale : 0.86;
+
+            const naturalImage = isNaturalLayout ? (
+              <div
+                className="relative w-full shrink-0 overflow-hidden"
+                style={{ aspectRatio: "426 / 413" }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/web/border.svg"
+                  alt=""
+                  aria-hidden
+                  width={426}
+                  height={413}
+                  className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+                  draggable={false}
+                />
+                <div className="absolute inset-0 overflow-hidden">
+                  <Image
+                    src={benefit.image}
+                    alt={benefit.alt}
+                    width={phoneWidth}
+                    height={phoneHeight}
+                    sizes="(max-width: 640px) 100vw, (max-width: 1000px) 50vw, 250px"
+                    unoptimized={benefit.image.endsWith(".svg")}
+                    className="pointer-events-none absolute left-1/2 top-[6%] z-10 h-auto max-w-none -translate-x-1/2"
+                    style={{
+                      width: `${phoneScale * 78}%`,
+                    }}
+                  />
+                </div>
+              </div>
+            ) : null;
+
+            const naturalText = isNaturalLayout ? (
+              <div
+                className={
+                  imagePlacement === "bottom"
+                    ? "px-2.5 pt-3 min-[640px]:px-4 min-[640px]:pt-4 sm:px-5 sm:pt-5 min-[1000px]:px-3.5 min-[1000px]:pt-4"
+                    : "px-2.5 min-[640px]:px-4 sm:px-5 min-[1000px]:px-3.5"
+                }
+              >
+                <h3
+                  className={`text-[12px] font-medium leading-[1.2] tracking-[-0.025em] min-[640px]:text-[14px] min-[1000px]:text-[15px] ${
+                    imagePlacement === "top" ? "mt-3 sm:mt-8" : ""
+                  }`}
+                >
+                  {benefit.title}
+                </h3>
+                <p className="mt-2 text-[11px] leading-[1.35] text-white/45 min-[640px]:mt-2.5 min-[640px]:text-[12px] min-[1000px]:text-[13px]">
+                  {benefit.description}
+                </p>
+              </div>
+            ) : null;
+
+            return (
             <motion.article
               key={benefit.title}
               initial={revealInitial}
@@ -109,20 +123,48 @@ export default function Benefits() {
                 ...revealTransition,
                 delay: shouldReduceMotion ? 0 : index * 0.055,
               }}
-              className="flex min-h-auto flex-col rounded-[9px] bg-[#171615] p-5 transition-colors duration-300 hover:bg-[#191818] sm:min-h-[190px] sm:p-6"
+              className={`flex h-full min-w-0 flex-col rounded-[9px] bg-[#171615] transition-colors duration-300 hover:bg-[#191818] sm:min-h-[190px] ${
+                isNaturalLayout
+                  ? `overflow-hidden ${imagePlacement === "top" ? "pb-4 sm:pb-5 min-[1000px]:pb-4" : ""}`
+                  : "p-2.5 min-[640px]:p-4 sm:p-5 min-[1000px]:p-3.5"
+              }`}
               style={{ willChange: "transform, opacity, filter" }}
             >
-              <span className="grid size-12 place-items-center rounded-full bg-[#080808] text-[#f4f4f2] sm:size-[64px]">
-                <Icon name={benefit.icon} />
-              </span>
-              <h3 className="mt-auto pt-3 sm:pt-8 text-[16px] font-medium leading-[1.2] tracking-[-0.025em]">
-                {benefit.title}
-              </h3>
-              <p className="mt-2.5 max-w-[360px] text-base leading-[1.3] text-white/45">
-                {benefit.description}
-              </p>
+              {isNaturalLayout ? (
+                imagePlacement === "top" ? (
+                  <>
+                    {naturalImage}
+                    {naturalText}
+                  </>
+                ) : (
+                  <>
+                    <div className="flex min-h-0 flex-1 flex-col">{naturalText}</div>
+                    {naturalImage}
+                  </>
+                )
+              ) : (
+                <>
+                  <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg bg-[#080808]">
+                    <Image
+                      src={benefit.image}
+                      alt={benefit.alt}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1000px) 50vw, 250px"
+                      unoptimized={benefit.image.endsWith(".svg")}
+                      className="object-cover object-top"
+                    />
+                  </div>
+                  <h3 className="mt-auto pt-3 text-[12px] font-medium leading-[1.2] tracking-[-0.025em] min-[640px]:pt-6 min-[640px]:text-[14px] min-[1000px]:pt-8 min-[1000px]:text-[15px]">
+                    {benefit.title}
+                  </h3>
+                  <p className="mt-2 text-[11px] leading-[1.35] text-white/45 min-[640px]:mt-2.5 min-[640px]:text-[12px] min-[1000px]:text-[13px]">
+                    {benefit.description}
+                  </p>
+                </>
+              )}
             </motion.article>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
